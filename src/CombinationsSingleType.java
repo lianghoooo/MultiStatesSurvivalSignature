@@ -6,6 +6,7 @@ public class CombinationsSingleType {
             List<List<Integer>> singleStateList = new ArrayList<>();
             List<List<List<Integer>>> allStateList = new ArrayList<>();
             List<List<List<Integer>>> combinationSingleType= new ArrayList<>();
+            List<Integer> combinationOfTheCondition= new ArrayList<>();;
             Diagram diagram;
             int type;
     public CombinationsSingleType(Diagram diagram,int type){
@@ -15,10 +16,10 @@ public class CombinationsSingleType {
             }
 
     public List<List<List<Integer>>> CombinationsSingleTypeGenerator() {
+        int len;
         List<List<Integer>> conditionalTableSingeType = new ConditionalTableSingleType(diagram,type).table;
         for (int i = 0; i < conditionalTableSingeType.size(); i++){
             for (int j = 0; j < diagram.state; j++){
-                boolean[] flag = new boolean[diagram.typesNum[type]];
                 singleStateDfs(conditionalTableSingeType.get(i).get(j),0);
                 allStateList.add(new ArrayList<>(singleStateList));
                 singleStateList.clear();
@@ -26,7 +27,11 @@ public class CombinationsSingleType {
         }
 
         for (int i=0;i<allStateList.size()/3;i++){
-            allStateDfs(allStateList.subList(i*diagram.state,diagram.state*(i+1)),0);
+            boolean[] flag = new boolean[diagram.componentsNum+1];
+            boolean signalNoDFS = false;
+            len = combinationSingleType.size();
+            allStateDfs(allStateList.subList(i*diagram.state,diagram.state*(i+1)),0,flag,signalNoDFS);
+            combinationOfTheCondition.add(combinationSingleType.size()-len);
         }
 
             return combinationSingleType;
@@ -44,16 +49,28 @@ public class CombinationsSingleType {
         }
     }
 
-    public void allStateDfs( List<List<List<Integer>>> allStateList,int index){
+    public void allStateDfs( List<List<List<Integer>>> allStateList,int index,boolean[] flag,boolean signalNoDFS){
         if (index==diagram.state){
             combinationSingleType.add(new ArrayList<>(singleStateList));
             return;
         }
         List<List<Integer>> targetLine = allStateList.get(index);
-        for (int i=0;i<targetLine.size();i++){
-            singleStateList.add(targetLine.get(i));
-            allStateDfs(allStateList,index+1);
-            singleStateList.remove(singleStateList.size()-1);
+        for (int i=0;i<targetLine.size();i++) {
+            for (int j = 0; j < targetLine.get(i).size(); j++) {
+                if (flag[targetLine.get(i).get(j)])
+                    signalNoDFS = true;
+            }
+            if (!signalNoDFS) {
+                for (int j = 0; j < targetLine.get(i).size(); j++)
+                    flag[targetLine.get(i).get(j)] = true;
+                singleStateList.add(targetLine.get(i));
+                allStateDfs(allStateList, index + 1, flag, signalNoDFS);
+                singleStateList.remove(singleStateList.size() - 1);
+                for (int j = 0; j < targetLine.get(i).size(); j++) {
+                    flag[targetLine.get(i).get(j)] = false;
+                }
+            }
+            signalNoDFS = false;
         }
 
     }
@@ -62,7 +79,7 @@ public class CombinationsSingleType {
         int[][] components = new int[][] {{1,2,3},{4,5}};
         int state= 3;
         Diagram diagram = new Diagram(components,state);
-        CombinationsSingleType com = new CombinationsSingleType(diagram,0);
+        CombinationsSingleType com = new CombinationsSingleType(diagram,1);
         System.out.println("over");
     }
 }

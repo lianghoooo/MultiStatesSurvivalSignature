@@ -2,26 +2,43 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ConditionalTable {
-//    List<Integer> subtable = new ArrayList<>();
-    List<ConditionalTableSingleType> table = new ArrayList<>();
+    List<List<Integer>> table = new ArrayList<>();
+    Diagram diagram;
     public ConditionalTable(Diagram diagram){
-        this.table = conditionalTableGenerator(diagram);
+        this.diagram = diagram;
+        this.table = conditionalTableGenerator();
     }
-    public  List<ConditionalTableSingleType> conditionalTableGenerator(Diagram diagram){
-        dfs(diagram,0);
-        return table;
+    public List<List<Integer>> conditionalTableGenerator(){
+        List<ConditionalTableSingleType> listConditionalSingle = new ArrayList<>();
+        List<List<Integer>> ans = new ArrayList<>();
+        List<Integer> subans = new ArrayList<>();
+        for (int i=0;i<diagram.typesNum.length;i++)
+            listConditionalSingle.add(new ConditionalTableSingleType(diagram,i));
+        dfs(diagram,0,listConditionalSingle,ans,subans);
+        return ans;
     }
-    public void dfs(Diagram diagram,int index){
+    public void dfs(Diagram diagram,int index,List<ConditionalTableSingleType> listConditionalSingle,List<List<Integer>> ans, List<Integer> subans){
         if (index==diagram.typesNum.length){
+            ans.add(new ArrayList<>(subans));
             return;
         }
-        table.add(new ConditionalTableSingleType(diagram,index));
-        dfs(diagram,index+1);
+        for (int i=0;i<listConditionalSingle.get(index).table.size();i++){
+            for (int j=0;j<diagram.state;j++){
+                subans.add(listConditionalSingle.get(index).table.get(i).get(j));
+            }
+            dfs(diagram,index+1,listConditionalSingle,ans,subans);
+            for (int j=0;j<diagram.state;j++){
+                subans.remove(subans.size()-1);
+            }
+        }
     }
 
-//    public static void main(String[] args) {
-//        ConditionalTable conditionalTable =  new ConditionalTable(new int[] {3,2},3);
-//        System.out.println(conditionalTable.table);
-//    }
+    public static void main(String[] args) {
+        int[][] components = new int[][] {{1,2,3},{4,5}};
+        int state= 3;
+        Diagram diagram = new Diagram(components,state);
+        ConditionalTable conditionalTable = new ConditionalTable(diagram);
+        System.out.println(conditionalTable.table);
+    }
 
 }

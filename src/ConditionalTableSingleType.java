@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class ConditionalTableSingleType {
@@ -41,7 +42,7 @@ public class ConditionalTableSingleType {
         int[][] components = new int[][] {{1,2,3},{4,5}};
         int state= 3;
         Diagram diagram = new Diagram(components,state);
-        ConditionalTableSingleType con = new ConditionalTableSingleType(diagram,0);
-        System.out.println(con.table);
+        ConditionalTableSingleType con = new ConditionalTableSingleType(diagram,1);
+        System.out.println("");
     }
 }
