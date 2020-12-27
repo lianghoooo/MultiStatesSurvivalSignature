@@ -26,7 +26,7 @@ public class CombinationsSingleType {
             }
         }
 
-        for (int i=0;i<allStateList.size()/3;i++){
+        for (int i=0;i<allStateList.size()/diagram.state;i++){
             boolean[] flag = new boolean[diagram.componentsNum+1];
             boolean signalNoDFS = false;
             len = combinationSingleType.size();
@@ -77,8 +77,9 @@ public class CombinationsSingleType {
 
     public static void main(String[] args) {
         int[][] components = new int[][] {{1,2,3},{4,5}};
+        float[][] stateProbability={{0.01f,0.01f,0.98f},{0.03f,0.03f,0.94f}};
         int state= 3;
-        Diagram diagram = new Diagram(components,state);
+        Diagram diagram = new Diagram(components,stateProbability);
         CombinationsSingleType com = new CombinationsSingleType(diagram,1);
         System.out.println("over");
     }

@@ -14,7 +14,7 @@ public class Diagram {
     List<List<Integer>> existPaths = new ArrayList<>();
     List<Float> subSurvivalSignature = new ArrayList<>();
     List<float[]> survivalSignature = new ArrayList<>();
-    public Diagram(int[][] components,int state){
+    public Diagram(int[][] components,float[][] stateProbability){
         this.components=components;
         this.typesNum = new int[components.length];
         for (int i=0;i<components.length;i++){
@@ -25,7 +25,7 @@ public class Diagram {
         }
 
         this.diagram = new int[componentsNum+2][componentsNum+2];
-        this.state = state;
+        this.state = stateProbability[0].length;
     }
     public void link(int start, int end){
         this.diagram[start][end]=1;
@@ -40,26 +40,29 @@ public class Diagram {
 
     public  List<float[]> getSurvivalSinature(){
 
-        this.getCombinations();
-        List<List<List<Integer>>> combinationsAlltypes = new ArrayList<>();
-        dfsAllTypesCombinations(0,combinationsAlltypes,subSurvivalSignature);
-        Combinations com = new Combinations(this);
-        int index=0;
-        for(Integer num :com.combinationOfTheCondition){//多少组合对应着一种条件
-            float[] stateCount = new float[state+1];
-            for (int i=0;i<num;i++){//组合数量的多少
-                for (int j=0;j<state;j++){//分状态统计
-                    if (subSurvivalSignature.get(index)==(float)j/(float)(state-1))
-                        stateCount[j]++;
-                }
-                index++;
-            }
-            for (int i=0;i<state;i++){
-                stateCount[i]/=(float)num;
-            }
-            stateCount[state] = num;
-            survivalSignature.add(stateCount);
-        }
+//        this.getCombinations();
+//        List<List<List<Integer>>> combinationsAlltypes = new ArrayList<>();
+//        dfsAllTypesCombinations(0,combinationsAlltypes,subSurvivalSignature);
+//        Combinations com = new Combinations(this);
+//        int index=0;
+//        for(Integer num :com.combinationOfTheCondition){//多少组合对应着一种条件
+//            float[] stateCount = new float[state+1];
+//            for (int i=0;i<num;i++){//组合数量的多少
+//                for (int j=0;j<state;j++){//分状态统计
+//                    if (subSurvivalSignature.get(index)==(float)j/(float)(state-1))
+//                        stateCount[j]++;
+//                }
+//                index++;
+//            }
+//            for (int i=0;i<state;i++){
+//                stateCount[i]/=(float)num;
+//            }
+//            stateCount[state] = num;
+//            survivalSignature.add(stateCount);
+//        }
+        ComputeSurvivalSignature computeSurvivalSignature = new ComputeSurvivalSignature(this);
+        ConditionalTable conditionalTable = new ConditionalTable(this);
+        survivalSignature = computeSurvivalSignature.computeSurvivalSignature(this,conditionalTable);
         return survivalSignature;
     }
 
@@ -86,9 +89,10 @@ public class Diagram {
         }
     }
 
+    //遍历每个一个组合下当前系统所处的状态
     public void dfsAllTypesCombinations(int index,List<List<List<Integer>>> combinationsAlltypes,List<Float> ans){
         if (index==this.typesNum.length){
-            ans.add(changeExistPathsState(existPaths,combinationsAlltypes));
+            ans.add(changeExistPathsState(existPaths,combinationsAlltypes));//每个一个组合下当前系统所处的状态
             return;
         }
             for(List<List<Integer>> subCombination:combinations.get(index).combinationSingleType){//每个类型的子组合

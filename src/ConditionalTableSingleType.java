@@ -5,6 +5,7 @@ import java.util.List;
 public class ConditionalTableSingleType {
     List<Integer> subtable = new ArrayList<>();
     List<List<Integer>> table = new ArrayList<>();
+    List<Float> conditionalProbabilitySingleType = new ArrayList<>();
     int type;
     public ConditionalTableSingleType(Diagram diagram,int type){
         this.type=type;
@@ -39,10 +40,13 @@ public class ConditionalTableSingleType {
 
     }
     public static void main(String[] args) {
-        int[][] components = new int[][] {{1,2,3},{4,5}};
+        int[][] components = new int[][] {{1,3,4},{2,5}};
+        float[][] stateProbability={{0.01f,0.01f,0.98f},{0.03f,0.03f,0.94f}};
         int state= 3;
-        Diagram diagram = new Diagram(components,state);
-        ConditionalTableSingleType con = new ConditionalTableSingleType(diagram,1);
+        Diagram diagram = new Diagram(components,stateProbability);
+        int type=1;
+        ConditionalTableSingleType con = new ConditionalTableSingleType(diagram,type);
+        new Output().output2DList(con.table,"ConditonalTableType"+type);
         System.out.println("");
     }
 }

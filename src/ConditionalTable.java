@@ -36,7 +36,8 @@ public class ConditionalTable {
     public static void main(String[] args) {
         int[][] components = new int[][] {{1,2,3},{4,5}};
         int state= 3;
-        Diagram diagram = new Diagram(components,state);
+        float[][] stateProbability={{0.01f,0.01f,0.98f},{0.03f,0.03f,0.94f}};
+        Diagram diagram = new Diagram(components,stateProbability);
         ConditionalTable conditionalTable = new ConditionalTable(diagram);
         System.out.println(conditionalTable.table);
     }

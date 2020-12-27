@@ -41,9 +41,10 @@ public class Combinations {
 
     public static void main(String[] args) {
         int[][] components = new int[][] {{1,2,3},{4,5}};
+        float[][] stateProbability={{0.01f,0.01f,0.98f},{0.03f,0.03f,0.94f}};
         int state= 3;
-        Diagram diagram = new Diagram(components,state);
+        Diagram diagram = new Diagram(components,stateProbability);
         Combinations com = new Combinations(diagram);
-        System.out.println("");
+        System.out.println(com.combinationOfTheCondition.toString());
     }
 }
