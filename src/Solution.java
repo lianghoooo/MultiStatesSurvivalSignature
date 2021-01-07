@@ -8,11 +8,11 @@ public class Solution {
 //        3.在本类中设置输出的生存签名文件名。
 //        4.调用自定义结构图中对应的方法。
 //        5.设置状态概率。
-//        6.run
+//        6.run！
 //        ---------------------------------------------------
         String fileName = "SSOfDiagramOf2Types5Components";
-//        float[][] stateProbability={{0.01f,0.01f,0.98f},{0.03f,0.03f,0.94f}};
-        float[][] stateProbability={{0.01f,0.01f,0.01f,0.01f,0.01f,0.95f},{0.03f,0.03f,0.01f,0.01f,0.01f,0.91f}};
+        float[][] stateProbability={{0.01f,0.01f,0.98f},{0.03f,0.03f,0.94f}};
+//        float[][] stateProbability={{0.01f,0.01f,0.01f,0.01f,0.01f,0.95f},{0.03f,0.03f,0.01f,0.01f,0.01f,0.91f}};
         Diagram diagram = new CustomDiagram(stateProbability).DiagramOf2Types5Components();
 //        ----------------------------------------------------
         new OutputSSAndComputeReliability().outputSSAndComputeReliability(diagram,fileName,stateProbability);

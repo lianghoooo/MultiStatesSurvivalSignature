@@ -15,9 +15,9 @@ public class Output {
             首行
              */
 
-            lineString ="tips:state-0-Failure,state-1-Mediate,state-2-Work,last column is the number of combinations of the condition";
-            out.write(lineString);
-            out.write(line);
+//            lineString ="tips:state-0-Failure,state-1-Mediate,state-2-Work,last column is the number of combinations of the condition";
+//            out.write(lineString);
+//            out.write(line);
             /*
             循环打印部分
              */
